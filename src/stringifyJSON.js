@@ -7,7 +7,13 @@ var stringifyJSON = function(obj) {
 
 
 	var jason = ''
-	  if (typeof obj === 'number'){
+
+  			if (typeof obj === 'undefined' || typeof obj === 'functions'){
+  				return '' 
+  			}
+
+	if (typeof obj === 'number'){
+
     return jason + obj
   } if (obj === null){
   	return jason + obj
@@ -21,5 +27,49 @@ var stringifyJSON = function(obj) {
   		}))
       return '[' + strings.join(',') + ']'
   }
+  	if (typeof obj === 'object'){
+
+
+  		var keys = []
+  		var vals = []
+
+  		if (Object.keys(obj).length === 0){
+  			return '{}'
+  		} else {
+
+  		for (var key in obj){
+  			keys.push(key)
+  			vals.push(obj[key])
+  		}
+
+
+  		var objString = keys.reduce(function(acc, ele, i){
+
+
+
+  			if(i < keys.length - 1){
+
+  				if (typeof vals[i] === 'function' || typeof vals[i] === 'undefined'){
+  					return acc
+  				}
+
+  			return acc += '"'+ ele + '"' + ':' + stringifyJSON(vals[i]) + ','
+  		}   
+  			if (i === keys.length - 1){
+  				if (typeof vals[i] === 'function' || typeof vals[i] === 'undefined'){
+  					return acc
+  				}
+
+  				return acc += '"'+ ele + '"' + ':' + stringifyJSON(vals[i])
+  			}
+
+
+  		}, '{')
+
+  		return objString + '}'
+
+  	}
+
+  	}
 
 };
