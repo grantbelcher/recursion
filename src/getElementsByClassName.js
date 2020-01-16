@@ -5,41 +5,28 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className) {
-	
-	var desiredElements = []
-	var desiredClasses = []
 
-	var className = '.' + className
-	
-	var x = $('*')
-		_.each(x, function(ele){
+	var body = document.body
 
-		var classes = ele.classList
+	var desiredElements = [];
+
+	var containsClass = function(body){
+
+		if (body.classList && body.classList.contains(className)){
+
+			desiredElements.push(body)
+
+		}
+		if (body.childNodes.length > 0){
+
+			_.each(body.childNodes, containsClass)
+		}
 		
-		if (classes.length > 0){
-					
-			desiredElements.push(ele)
-		}
+	}
 
-		})
+	containsClass(body)
 
+	return desiredElements
 
-		for (var i = 0; i < desiredElements.length; i++){
-
-			for (var j = 0; j < desiredElements[i].classList.length; j++){
-
-				console.log('.' + desiredElements[i].classList[j], className)
-				if (('.' + desiredElements[i].classList[j]) === className){
-
-					desiredClasses.push(desiredElements[i])
-				}
-			}
-		}
-
-
-
-
-
-	return desiredClasses
 };
 
